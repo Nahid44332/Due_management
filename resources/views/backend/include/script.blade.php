@@ -1,23 +1,69 @@
-<script src="{{asset('backend/assets/libs/jquery/dist/jquery.min.js')}}"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset('backend/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
-    <script src="{{asset('backend/assets/extra-libs/sparkline/sparkline.js')}}"></script>
-    <!--Wave Effects -->
-    <script src="{{asset('backend/dist/js/waves.js')}}"></script>
-    <!--Menu sidebar -->
-    <script src="{{asset('backend/dist/js/sidebarmenu.js')}}"></script>
-    <!--Custom JavaScript -->
-    <script src="{{asset('backend/dist/js/custom.min.js')}}"></script>
-    <!--This page JavaScript -->
-    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
-    <!-- Charts js Files -->
-    <script src="{{asset('backend/assets/libs/flot/excanvas.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/flot/jquery.flot.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/flot/jquery.flot.pie.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/flot/jquery.flot.time.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/flot/jquery.flot.stack.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/flot/jquery.flot.crosshair.js')}}"></script>
-    <script src="{{asset('backend/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js')}}"></script>
-    <script src="{{asset('backend/dist/js/pages/chart/chart-page-init.js')}}"></script>
+ <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('closed');
+    }
+
+    function toggleDropdown() {
+      document.getElementById('dropdownMenu').style.display =
+        document.getElementById('dropdownMenu').style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Chart.js Setup
+    const usersChart = new Chart(document.getElementById('usersChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+          label: 'Users',
+          data: [120, 150, 180, 200, 170, 190, 230],
+          backgroundColor: '#6c63ff',
+          borderRadius: 8
+        }]
+      },
+      options: { plugins: { legend: { display: false }}, scales: { y: { display:false } } }
+    });
+
+    const salesChart = new Chart(document.getElementById('salesChart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+        datasets: [{
+          data: [5000, 7000, 6000, 9000, 11000, 10500],
+          borderColor: '#6c63ff',
+          fill: false,
+          tension: 0.4
+        }]
+      },
+      options: { plugins: { legend: { display: false }}, scales: { y: { display:false } } }
+    });
+
+    const expenseChart = new Chart(document.getElementById('expenseChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Rent','Salaries','Marketing'],
+        datasets: [{
+          data: [5000, 4000, 3700],
+          backgroundColor: ['#6c63ff','#8e9fff','#b8bfff']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const growthChart = new Chart(document.getElementById('growthChart'), {
+      type: 'line',
+      data: {
+        labels: ['Q1','Q2','Q3','Q4'],
+        datasets: [{
+          data: [5,10,15,18],
+          borderColor: '#6c63ff',
+          fill: false,
+          tension: 0.3
+        }]
+      },
+      options: { plugins: { legend: { display: false }}, scales: { y: { display:false } } }
+    });
+  </script>
