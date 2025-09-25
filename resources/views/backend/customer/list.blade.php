@@ -34,10 +34,15 @@
               {{ number_format($customer->total_due, 2) }}
             </td>
             <td style="padding:15px; text-align:center;">
-              <a href="#" style="padding:8px 15px; background:#6c63ff; color:white; font-weight:600;
+              <a href="{{url('/admin/customer/view/'.$customer->id)}}" style="padding:8px 15px; background:#6c63ff; color:white; font-weight:600;
                  border-radius:12px; text-decoration:none; display:inline-block;
                  box-shadow:4px 4px 8px #a3b1c6, -4px -4px 8px #fff;">
                 View
+              </a>
+              <a href="{{url('/admin/customer/delete/'.$customer->id)}}" style="padding:8px 15px; background:red; color:white; font-weight:600;
+                 border-radius:12px; text-decoration:none; display:inline-block;
+                 box-shadow:4px 4px 8px #a3b1c6, -4px -4px 8px #fff;">
+                Delete
               </a>
             </td>
           </tr>

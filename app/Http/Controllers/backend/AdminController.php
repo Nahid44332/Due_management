@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -47,5 +48,50 @@ class AdminController extends Controller
     {
         $customers = Customer::orderBy('id', 'desc')->get();
         return view('backend.customer.list', compact('customers'));
+    }
+
+    public function viewCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        $transactions = $customer->transactions()->orderBy('date', 'desc')->get();
+
+        return view('backend.customer.view', compact('customer', 'transactions'));
+    }
+
+    public function payDue(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+        ]);
+
+        $amount = $request->amount;
+
+        $transactionNo = 'TRX-' . strtoupper(uniqid());
+
+        Transaction::create([
+            'transaction_no' => $transactionNo,
+            'customer_id' => $customer->id,
+            'description' => 'Due Payment',
+            'amount' => $amount,
+            'date' => now(),
+        ]);
+
+        $customer->total_due -= $amount;
+        $customer->save();
+
+        toastr()->success('Payment Successful.');
+        return redirect('admin/customer/view/'.$customer->id);
+    }
+
+
+    public function customerDelete($id)
+    {
+        $customer = Customer::with('transactions')->find($id);
+
+        $customer->delete();
+        toastr()->success('Customer Delete Successfully.');
+        return redirect()->back();
     }
 }

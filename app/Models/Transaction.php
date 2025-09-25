@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function transactions()
+     public function customer()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->belongsTo(Customer::class);
     }
 }
