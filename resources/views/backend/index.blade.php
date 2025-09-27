@@ -31,22 +31,23 @@ body {
               -13px -13px 20px #ffffff;
 }
 .logo {
-  background:url("https://source.unsplash.com/100x100/?nature,water");
-  width:100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  margin:0 auto;
+  margin: 0 auto;
+
+  background-image: url("{{ asset('backend/logo.png') }}");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   box-shadow: 
-  /* logo shadow */
-  0px 0px 2px #5f5f5f,
-  /* offset */
-  0px 0px 0px 5px #ecf0f3,
-  /*bottom right */
-  8px 8px 15px #a7aaaf,
-  /* top left */
-  -8px -8px 15px #ffffff
-  ;
+    0px 0px 2px #5f5f5f,
+    0px 0px 0px 5px #ecf0f3,
+    8px 8px 15px #a7aaaf,
+    -8px -8px 15px #ffffff;
 }
+
 .title {
   text-align: center;
   font-size: 28px;
