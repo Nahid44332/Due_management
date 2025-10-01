@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -92,6 +94,83 @@ class AdminController extends Controller
 
         $customer->delete();
         toastr()->success('Customer Delete Successfully.');
+        return redirect()->back();
+    }
+
+    // Profile
+    public function profile()
+    {
+        $user = auth()->user();
+        return view('backend.admin.profile', compact('user'));
+    }
+
+    public function profileUpdate()
+    {
+        $user = auth()->user();
+        return view('backend.admin.update-profile', compact('user'));
+    }
+
+    public function profileUpdateStore(Request $request)
+    {
+           $user = Auth::user();
+
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $user->name  = $request->name;
+        $user->email = $request->email;
+
+      
+      if(isset($request->image)){
+
+            if($user->image && file_exists('backend/images/admin/'.$user->image)){
+                unlink('backend/images/admin/'.$user->image);
+            }
+
+            $imageName = rand().'-admin'.'.'.$request->image->extension();
+            $request->image->move('backend/images/admin/', $imageName);
+
+            $user->image = $imageName;
+        }
+
+        $user->save();
+        toastr()->success('Profile Update Successfully');
+        return redirect('/admin/profile');
+    }
+
+    public function changePassword()
+    {
+        return view('backend.admin.password');
+    }
+
+      public function updatePassword(Request $request)
+    {
+        // Validate input (confirmed মানে password_confirmation চাই)
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password'         => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'current_password.required' => 'Please enter your old password',
+            'password.required' => 'Please enter a new password',
+            'password.min' => 'New password must be at least 8 characters',
+            'password.confirmed' => 'New password confirmation does not match',
+        ]);
+
+        $user = auth()->user();
+
+        // Manual check of old password (safer for debugging)
+        if (! Hash::check($request->current_password, $user->password)) {
+            // পুরনো পাসওয়ার্ড মেলেনি
+            return back()->withErrors(['current_password' => 'Old password is incorrect.']);
+        }
+
+        // Update password (use Hash::make or bcrypt)
+        $user->password = Hash::make($request->password);
+        $user->save();
+        toastr()->success('Password updated successfully!');
         return redirect()->back();
     }
 }

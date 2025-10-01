@@ -1,4 +1,4 @@
- <div class="navbar">
+<div class="navbar">
     <div class="nav-left">
       <div class="menu-btn" onclick="toggleSidebar()">☰</div>
       <h1>Admin Panel</h1>
@@ -8,10 +8,10 @@
         <div class="toggle-circle"></div>
       </div>
       <div class="profile" onclick="toggleDropdown()">
-        <img src="https://i.pravatar.cc/40" alt="profile">
+        <img src="{{asset('backend/images/admin/'.$user->image)}}" alt="profile">
         <span>Admin ▼</span>
         <div class="dropdown" id="dropdownMenu">
-          <a href="#">Profile</a>
+          <a href="{{url('/admin/profile')}}">Profile</a>
           <a href="{{url('/logout')}}">Logout</a>
         </div>
       </div>
